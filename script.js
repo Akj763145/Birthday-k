@@ -55,6 +55,67 @@ document.addEventListener('DOMContentLoaded', function() {
             createFireworks();
             playCelebrationSound();
         });
+        
+        // Memory photo interaction
+        const memoryFrame = document.querySelector('.memory-frame');
+        if (memoryFrame) {
+            memoryFrame.addEventListener('click', function() {
+                createMemorySparkles();
+                playMemorySound();
+            });
+        }
+    }
+    
+    function createMemorySparkles() {
+        const container = document.querySelector('.confetti');
+        const memoryFrame = document.querySelector('.memory-frame');
+        const rect = memoryFrame.getBoundingClientRect();
+        
+        // Create special memory sparkles around the photo
+        for (let i = 0; i < 15; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'confetti-piece memory-sparkle';
+            sparkle.style.left = rect.left + rect.width / 2 + 'px';
+            sparkle.style.top = rect.top + rect.height / 2 + 'px';
+            sparkle.style.background = '#ff69b4';
+            sparkle.style.width = '12px';
+            sparkle.style.height = '12px';
+            sparkle.style.borderRadius = '50%';
+            sparkle.style.animation = `memorySparkle 1.8s ease-out forwards`;
+            sparkle.style.animationDelay = Math.random() * 0.5 + 's';
+            
+            container.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 1800);
+        }
+    }
+    
+    function playMemorySound() {
+        if ('AudioContext' in window || 'webkitAudioContext' in window) {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Create a gentle, magical sound for memories
+            const frequencies = [659.25, 783.99, 987.77]; // E, G, B - a beautiful triad
+            
+            frequencies.forEach((freq, index) => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = freq;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+                
+                oscillator.start(audioContext.currentTime + index * 0.15);
+                oscillator.stop(audioContext.currentTime + 1.5 + index * 0.15);
+            });
+        }
     }
     
     function createGiftExplosion() {
@@ -303,6 +364,21 @@ document.addEventListener('DOMContentLoaded', function() {
         .celebration-burst {
             width: 6px;
             height: 6px;
+        }
+        
+        @keyframes memorySparkle {
+            0% {
+                transform: translate(0, 0) scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(${Math.random() * 150 - 75}px, ${Math.random() * 150 - 75}px) scale(1.2) rotate(180deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(${Math.random() * 250 - 125}px, ${Math.random() * 250 - 125}px) scale(0) rotate(360deg);
+                opacity: 0;
+            }
         }
     `;
     document.head.appendChild(style);
