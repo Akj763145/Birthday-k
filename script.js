@@ -8,6 +8,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const balloons = document.querySelectorAll('.balloon');
     const cake = document.querySelector('.cake');
     
+    // Create audio element for birthday song
+    const birthdaySong = new Audio('birthday-song.mp3');
+    birthdaySong.volume = 0.7; // Set comfortable volume
+    
     // Gift box click handler - main interaction
     giftBox.addEventListener('click', function() {
         explodeGiftBox();
@@ -17,8 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add exploding animation to gift box
         giftBox.classList.add('exploding');
         
-        // Play explosion sound
-        playExplosionSound();
+        // Play birthday song instead of explosion sound
+        playBirthdaySong();
         
         // Create explosion effects
         createGiftExplosion();
@@ -39,6 +43,16 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             createCelebrationBurst();
         }, 1200);
+    }
+    
+    function playBirthdaySong() {
+        // Play the birthday song MP3 file
+        birthdaySong.currentTime = 0; // Reset to beginning in case it was played before
+        birthdaySong.play().catch(error => {
+            console.log('Audio playback failed:', error);
+            // Fallback to explosion sound if MP3 fails to load
+            playExplosionSound();
+        });
     }
     
     function addBirthdayInteractions() {
@@ -263,6 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function playExplosionSound() {
+        // Fallback explosion sound if MP3 doesn't work
         if ('AudioContext' in window || 'webkitAudioContext' in window) {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             
