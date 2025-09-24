@@ -235,8 +235,8 @@ body {
 }
 
 .memory-photo {
-  max-width: 200px;
-  max-height: 150px;
+  max-width: 300px;
+  max-height: 225px;
   width: 100%;
   height: auto;
   border-radius: 10px;
@@ -604,8 +604,8 @@ body {
   }
   
   .memory-photo {
-    max-width: 180px;
-    max-height: 130px;
+    max-width: 270px;
+    max-height: 200px;
   }
   
   .memory-frame {
@@ -688,7 +688,7 @@ body {
   }
   
   .memory-photo {
-    max-width: 160px;
-    max-height: 120px;
+    max-width: 240px;
+    max-height: 180px;
   }
 }
